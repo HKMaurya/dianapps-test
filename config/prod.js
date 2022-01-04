@@ -11,7 +11,7 @@
    env: 'prod',
    baseUrl,
    server: {
-     host: '127.0.0.1',
+     host: 'https://dianapps.herokuapp.com',
      port: port,
    },
    product: {
