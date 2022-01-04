@@ -4,14 +4,14 @@ const express = require('express'),
   fs = require('fs'),
   path = require('path'),
   cons = require('consolidate'),
-  // Config = require('./config/config'),
+  Config = require('./config/config'),
   root = fs.realpathSync('.'),
   i18n = require('./i18n'),
   boom = require('express-boom'),
   app = express(),
   swaggerJsdoc = require('swagger-jsdoc'),
   swaggerUi = require('swagger-ui-express');
-
+console.log(Config, 'Config+++++')
 // // Swagger set up
 // const options = {
 //   swaggerDefinition: {
