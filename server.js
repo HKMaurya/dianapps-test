@@ -11,40 +11,39 @@ const express = require('express'),
   app = express(),
   swaggerJsdoc = require('swagger-jsdoc'),
   swaggerUi = require('swagger-ui-express');
-console.log(Config, 'Config+++++')
-// // Swagger set up
-// const options = {
-//   swaggerDefinition: {
-//     openapi: '3.0.0',
-//     info: {
-//       title: 'Test APP',
-//       version: '1.0.0',
-//       description: 'Test APP API Documentation',
-//       license: {
-//         name: 'Hemant S.R.L.',
-//       },
-//       contact: {
-//         name: 'Hemant Maurya',
-//         email: 'sharewithmaurya@gmail.com',
-//       },
-//     },
-//     servers: [
-//       {
-//         url: 'http://localhost:8080',
-//         description: 'Development server',
-//       },
-//     ],
-//   },
-//   apis: ['./validations/**/*.js', './routes/**/*.js'],
-// };
+// Swagger set up
+const options = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Test APP',
+      version: '1.0.0',
+      description: 'Test APP API Documentation',
+      license: {
+        name: 'Hemant S.R.L.',
+      },
+      contact: {
+        name: 'Hemant Maurya',
+        email: 'sharewithmaurya@gmail.com',
+      },
+    },
+    servers: [
+      {
+        url: Config.baseUrl,
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: ['./validations/**/*.js', './routes/**/*.js'],
+};
 
-// const specs = swaggerJsdoc(options);
-// const cssOptions = {
-//   customCss: '.swagger-ui .topbar { display: none }',
-//   customSiteTitle: 'Test App API docs',
-//   customfavIcon: '/lib/img/favicon.ico',
-// };
-// app.use('/api/testapp/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
+const specs = swaggerJsdoc(options);
+const cssOptions = {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Test App API docs',
+  customfavIcon: '/lib/img/favicon.ico',
+};
+app.use('/api/testapp/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
 
 require('./models');
 require('./lib/database');
