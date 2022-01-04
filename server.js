@@ -4,7 +4,7 @@ const express = require('express'),
   fs = require('fs'),
   path = require('path'),
   cons = require('consolidate'),
-  Config = require('./config/config'),
+  // Config = require('./config/config'),
   root = fs.realpathSync('.'),
   i18n = require('./i18n'),
   boom = require('express-boom'),
@@ -12,44 +12,44 @@ const express = require('express'),
   swaggerJsdoc = require('swagger-jsdoc'),
   swaggerUi = require('swagger-ui-express');
 
-// Swagger set up
-const options = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Test APP',
-      version: '1.0.0',
-      description: 'Test APP API Documentation',
-      license: {
-        name: 'Hemant S.R.L.',
-      },
-      contact: {
-        name: 'Hemant Maurya',
-        email: 'sharewithmaurya@gmail.com',
-      },
-    },
-    servers: [
-      {
-        url: Config.baseUrl,
-        description: 'Development server',
-      },
-    ],
-  },
-  apis: ['./validations/**/*.js', './routes/**/*.js'],
-};
+// // Swagger set up
+// const options = {
+//   swaggerDefinition: {
+//     openapi: '3.0.0',
+//     info: {
+//       title: 'Test APP',
+//       version: '1.0.0',
+//       description: 'Test APP API Documentation',
+//       license: {
+//         name: 'Hemant S.R.L.',
+//       },
+//       contact: {
+//         name: 'Hemant Maurya',
+//         email: 'sharewithmaurya@gmail.com',
+//       },
+//     },
+//     servers: [
+//       {
+//         url: 'http://localhost:8080',
+//         description: 'Development server',
+//       },
+//     ],
+//   },
+//   apis: ['./validations/**/*.js', './routes/**/*.js'],
+// };
 
-const specs = swaggerJsdoc(options);
-const cssOptions = {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Test App API docs',
-  customfavIcon: '/lib/img/favicon.ico',
-};
-app.use('/api/testapp/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
+// const specs = swaggerJsdoc(options);
+// const cssOptions = {
+//   customCss: '.swagger-ui .topbar { display: none }',
+//   customSiteTitle: 'Test App API docs',
+//   customfavIcon: '/lib/img/favicon.ico',
+// };
+// app.use('/api/testapp/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
 
 require('./models');
-require('./lib/database');
+// require('./lib/database');
 require('./lib/logger').Logger;
-process.env.TZ = Config.timeZone;
+// process.env.TZ = Config.timeZone;
 const CoachController = require('./controllers/CoachController');
 CoachController.addCoaches();
 
@@ -82,7 +82,7 @@ require('./routes')(app);
 app.use(i18n);
 
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(root, 'index.html'), { socketUrl: Config.baseUrl });
+  res.sendFile(path.join(root, 'index.html'));
 });
 
 // Example error handler
