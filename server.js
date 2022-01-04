@@ -16,9 +16,9 @@ const options = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'Test APP',
+      title: 'DianApps',
       version: '1.0.0',
-      description: 'Test APP API Documentation',
+      description: 'DianApps API Documentation',
       license: {
         name: 'Hemant S.R.L.',
       },
@@ -30,7 +30,7 @@ const options = {
     servers: [
       {
         url: Config.baseUrl,
-        description: 'Development server',
+        description: 'Production server',
       },
     ],
   },
@@ -40,10 +40,10 @@ const options = {
 const specs = swaggerJsdoc(options);
 const cssOptions = {
   customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'Test App API docs',
+  customSiteTitle: 'DianApps API docs',
   customfavIcon: '/lib/img/favicon.ico',
 };
-app.use('/api/testapp/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
+app.use('/api/dianapps/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
 
 require('./models');
 require('./lib/database');
