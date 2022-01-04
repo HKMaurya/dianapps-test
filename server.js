@@ -47,7 +47,7 @@ const express = require('express'),
 // app.use('/api/testapp/docs', swaggerUi.serve, swaggerUi.setup(specs, cssOptions));
 
 require('./models');
-// require('./lib/database');
+require('./lib/database');
 require('./lib/logger').Logger;
 // process.env.TZ = Config.timeZone;
 const CoachController = require('./controllers/CoachController');
