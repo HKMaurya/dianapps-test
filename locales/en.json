@@ -1,0 +1,18 @@
+{
+	"InvalidLogin": "Invalid login credentials",
+	"SignupSuccess": "Your registration has been successfully done",
+	"LoginSuccess": "Login successfully",
+	"Success": "Success",
+	"invalidAuthorization": "Invalid authorization",
+	"invalidLanguage": "Invalid provided language",
+	"InvalidId": "Id is invalid",
+	"EmailTaken": "This email is already registered with us",
+	"InvalidEmailOrPassword": "Login credentials is invalid",
+	"UserProfile": "User profile",
+	"missingAuthorization": "Missing authorization",
+	"success": "success",
+	"maxBookingExceed": "Sorry, you can book only 7 seats at a time",
+	"seatBookingSuccess": "Seat has been booked successfully",
+	"seatFull": "Booking not allowed",
+	"exceedingSeatLimit": "You are exceeding seat limit"
+}

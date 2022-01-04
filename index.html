@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="robots" content="noindex" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Test APP</title>
+    <style type="text/css">
+      .list-seat {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+      }
+      span {
+        width: 10px;
+        flex: 0 0 14.2857142857%;
+        padding: 5px;
+        /* margin: 2px; */
+        color: #fff;
+        text-align: center;
+      }
+      .booked {
+        background-color: red
+      }
+      .notBooked {
+        background-color: green
+      }
+      .error {
+        background-color: red;
+        color: #fff;
+        text-align: center;
+        margin: 5px;
+        padding: 5px;
+      }
+      .success {
+        background-color: green;
+        color: #fff;
+        text-align: center;
+        margin: 5px;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Welcome to Seat Booking APP</h2>
+        <div class="row">
+            <div class="col-sm-12 list-seat" id="seat"></div>
+            <div class="form-container" id="openFrom">
+                <div id="seatbooking"></div>
+                <label>Name</label>
+                <div class="form-group"> 
+                    <input type="text" class="form-control" id="name" placeholder="Name..."> 
+                </div> 
+                <label>Email</label>
+                <div class="form-group"> 
+                    <input type="text" class="form-control" id="email" placeholder="Email..."> 
+                </div>
+                <label>No. Of Seat</label>
+                <div class="form-group"> 
+                    <input type="text" class="form-control" id="seatNumber" placeholder="Seat..."> 
+                </div>
+                <div class="text-center">
+                  <button class="btn btn-primary" onclick="saveData()" id="submitForm">Submit</button>
+                </div>
+            </div> 
+            <div class="text-center">
+              <button class="btn btn-primary" onclick="bookNow()" id="bookFrom">Book</button>
+            </div>
+        </div>
+    </div>
+  </body>
+  <footer>
+    <script type="text/javascript">
+    // api url
+    const BASEURL = '<%= baseUrl %>';
+    const api_url = `http://localhost:8080/api/coaches`;
+    const book_api_url = `http://localhost:8080/api/seat/booking`;
+    // Getting seats
+    async function getapi(url) {
+        // Storing response
+        const response = await fetch(url);
+        // Storing data in form of JSON
+        const data = await response.json();
+        if(data.data && data.data.length > 0) {
+          let mainDiv = document.getElementById('seat');
+          for (let i = 0; i < data.data[0].seats.length; i++) {
+            let newSpan = document.createElement('span');
+            newSpan.innerText = data.data[0].seats[i].seat;
+            newSpan.id = data.data[0].seats[i].seat;
+            newSpan.className = data.data[0].seats[i].isBooked ? "booked" : "notBooked" ;
+            mainDiv.appendChild(newSpan);
+          }
+        }
+        document.getElementById("submitForm").style.display="none";
+        document.getElementById("openFrom").style.display="none";
+    }
+    // Calling that async function
+    getapi(api_url);
+
+    //Open booking form
+    function bookNow() {
+      document.getElementById("seat").style.display="none";
+      document.getElementById("bookFrom").style.display="none";
+      document.getElementById("openFrom").style.display="block";
+      document.getElementById("submitForm").style.display="block";
+    }
+    const validateEmail = (email) => {
+      return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    };
+    async function saveData() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const seat = document.getElementById('seatNumber').value;
+        //Check empty value
+        if(!name) {
+          let data = {
+            error: true,
+            message: "Please enter your name"
+          }
+          show(data);
+          return false;
+        }
+        if(!email) {
+          let data = {
+            error: true,
+            message: "Please enter your email"
+          }
+          show(data);
+          return false;
+        }
+        if(!validateEmail(email)) {
+          let data = {
+            error: true,
+            message: "Please enter your valid email address"
+          }
+          show(data);
+          return false;
+        }
+        if(!seat) {
+          let data = {
+            error: true,
+            message: "Please enter your seat number"
+          }
+          show(data);
+          return false;
+        }
+        //Check seat value
+        if (isNaN(seat)) {
+            let data = {
+              error: true,
+              message: "Must input numbers"
+            }
+            show(data);
+            return false;
+        }
+        let seatValue = parseInt(seat);
+        if(seatValue < 1) {
+          let data = {
+              error: true,
+              message: "Please input valid number"
+            }
+            show(data);
+            return false;
+        }
+        if(seatValue > 7) {
+          let data = {
+              error: true,
+              message: "Sorry, you can book only 7 seats at a time"
+            }
+            show(data);
+            return false;
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, seat  })
+        };
+        const response = await fetch(book_api_url, requestOptions);
+        let dataRes = await response.json();
+        show(dataRes);
+        return false;
+    }
+
+    // Function to define innerHTML for HTML table
+    function show(data) {
+        let tab
+        if(data.error) {
+            tab = `<p class="error">${data.message}</p>`;
+            document.getElementById("seatbooking").innerHTML = tab;
+            setTimeout(function() {
+                document.getElementById("seatbooking").innerHTML = ''
+            }, 4000);
+        } else {
+            tab = `<p class="success">${data.message}</p>`;
+            document.getElementById("seatbooking").innerHTML = tab;
+            setTimeout(function() {
+                document.getElementById("seatbooking").innerHTML = '';
+                window.location.reload();
+            }, 4000)
+        }
+        
+    }
+    </script>
+  </footer>
+</html>
