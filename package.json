@@ -5,9 +5,7 @@
   "author": "Hemant Maurya <sharewithmaurya@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "node server.js",
-    "start": "sudo nodemon server.js",
-    "seed": "node seeder.js"
+    "start": "sudo nodemon server.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
